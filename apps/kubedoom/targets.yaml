@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: target-a
+  namespace: kubedoom-targets
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: target-a
+  template:
+    metadata:
+      labels:
+        app: target-a
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: target-b
+  namespace: kubedoom-targets
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: target-b
+  template:
+    metadata:
+      labels:
+        app: target-b
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubedoom
+  namespace: kubedoom
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: kubedoom
+  template:
+    metadata:
+      labels:
+        app: kubedoom
+    spec:
+      serviceAccountName: kubedoom
+      containers:
+        - name: kubedoom
+          image: ghcr.io/storax/kubedoom:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NAMESPACE
+              value: kubedoom-targets
+          ports:
+            - name: vnc
+              containerPort: 5900
+              protocol: TCP
