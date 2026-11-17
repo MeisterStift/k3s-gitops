@@ -1,0 +1,27 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cpu-load-alert
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: cpu-load-test
+      rules:
+        - alert: CpuLoadTestHigh
+          expr: |
+            sum(
+              rate(
+                container_cpu_usage_seconds_total{
+                  namespace="load-test",
+                  container="cpu-load"
+                }[2m]
+              )
+            ) > 0.02
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Hohe CPU-Last im Test-Namespace"
+            description: "Der cpu-load-Container verwendet seit mindestens einer Minute mehr als 0,02 CPU-Kerne."
